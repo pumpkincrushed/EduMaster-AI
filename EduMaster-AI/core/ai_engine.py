@@ -9,7 +9,6 @@ import os
 from typing import Optional, Generator
 
 import streamlit as st
-api_key = st.secrets["GEMINI_API_KEY"]
 
 from config.settings import GEMINI_MODEL_DEFAULT, MAX_OUTPUT_TOKENS, DEFAULT_TEMPERATURE
 from config.prompts import SYSTEM_BASE, PROMPT_NO_API_KEY, PROMPT_API_ERROR
