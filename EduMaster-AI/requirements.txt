@@ -1,0 +1,29 @@
+# Dependencias de EduMaster AI
+
+# Interfaz web
+streamlit>=1.40.0
+
+# Google Gemini API (nuevo SDK unificado)
+google-genai>=1.0.0
+
+# Variables de entorno
+python-dotenv>=1.0.0
+
+# Documentos Word
+python-docx>=1.1.0
+
+# Documentos PDF
+reportlab>=4.2.0
+
+# Lectura de PDFs
+pymupdf>=1.24.0
+
+# Peticiones HTTP (OpenAlex, Crossref)
+requests>=2.32.0
+
+# Procesamiento de datos
+pandas>=2.2.0
+
+# Tests
+pytest>=8.0.0
+pytest-cov>=5.0.0
