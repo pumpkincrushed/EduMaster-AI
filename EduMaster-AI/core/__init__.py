@@ -1,1 +1,1 @@
-"""EduMaster AI — Core package"""
+# paquete modules
