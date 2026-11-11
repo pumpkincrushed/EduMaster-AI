@@ -133,13 +133,5 @@ Las dependencias de `core/document_reader.py` y `core/document_writer.py` (pytho
 
 ---
 
-## Próximos pasos
-
-- Módulo de integridad académica y uso de la IA en el aula (tareas resistentes a la IA, rúbricas de proceso, materiales para el alumnado).
-- Generador de materiales docentes (unidades didácticas, situaciones de aprendizaje).
-- Investigación con OpenAlex y Crossref, y exportación a Word/PDF.
-- Tests automáticos con GitHub Actions.
-
----
 
 Proyecto de desarrollo personal.
