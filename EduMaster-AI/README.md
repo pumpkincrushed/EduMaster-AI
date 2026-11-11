@@ -1,137 +1,244 @@
-# EduMaster AI
+# 🎓 EduMaster AI
 
-**Plataforma académica y pedagógica con Inteligencia Artificial**
+**Asistente académico basado en inteligencia artificial para el Máster de Formación del Profesorado.**
 
-EduMaster AI es una aplicación web construida con Streamlit y la API de Google Gemini, pensada para apoyar la producción académica y la creación de materiales docentes en el ámbito educativo.
+EduMaster AI es una aplicación web desarrollada con Python y Streamlit que utiliza Google Gemini para ayudar en la redacción, revisión y mejora de textos académicos.
 
-El proyecto está en desarrollo. Hoy funciona la revisión de redacción; el resto de módulos están planificados.
+El proyecto busca facilitar el trabajo académico y educativo mediante herramientas de inteligencia artificial, manteniendo el criterio, la autoría y la responsabilidad del usuario sobre los contenidos generados.
 
----
+## 🚀 Tecnologías utilizadas
 
-## Estado actual
+| Tecnología | Función |
+|---|---|
+| Python | Lenguaje principal |
+| Streamlit | Interfaz web |
+| Google Gemini | Motor de inteligencia artificial |
+| Google Gen AI SDK | Conexión con Gemini |
+| python-dotenv | Gestión de variables de entorno |
 
-| Módulo | Estado |
-|--------|--------|
-| ✍️ Revisión de redacción | ✅ Disponible |
-| 📄 Generador de trabajos académicos | 🗂️ Carpeta creada, sin implementar |
-| 📚 Materiales docentes | 🗂️ Carpeta creada, sin implementar |
-| 🔍 Investigación y bibliografía | 🗂️ Carpeta creada, sin implementar |
-| 📊 Evaluación y atención a la diversidad | 🗂️ Carpeta creada, sin implementar |
-| 📁 Gestión de documentos | 🗂️ Carpeta creada, sin implementar |
-| ⚖️ Normativa educativa de Galicia | 🗂️ Carpeta creada, sin implementar |
-| 🤖 Asistente académico general | 🗂️ Carpeta creada, sin implementar |
+## 🧰 Funcionalidades implementadas
 
-### Revisión de redacción
+Actualmente, la aplicación dispone de dos herramientas principales.
 
-El usuario pega un borrador escrito por él mismo y la aplicación:
+### 1. Revisión de redacción
 
-- Señala repeticiones, problemas de cohesión, registro poco académico y errores.
-- Explica cada sugerencia para que el autor aprenda de ella.
-- Opcionalmente propone una versión revisada, que se muestra junto al original y se puede editar.
+Permite analizar borradores académicos y obtener sugerencias de mejora mediante inteligencia artificial.
 
-No cambia el significado, los datos ni las citas, y no inventa fuentes.
+**Características:**
+- Análisis de gramática y redacción.
+- Identificación de repeticiones.
+- Mejora de cohesión y coherencia.
+- Detección de ambigüedades.
+- Recomendaciones sobre registro académico.
+- Generación de una versión revisada del texto.
+- Comparación entre el documento original y el revisado.
 
----
+Dispone de dos modalidades:
+- Solo comentarios.
+- Comentarios y versión revisada.
 
-## Requisitos
+### 2. Laboratorio de escritura académica (AI Text Lab)
 
-- Python 3.10 o superior
-- Clave de API de Google Gemini ([obtener aquí](https://aistudio.google.com/app/apikey))
+Nuevo módulo incorporado para analizar las características lingüísticas de textos académicos y mejorar su calidad de escritura.
 
-## Instalación local
+Se organiza en dos apartados:
+
+**A. Análisis del texto**
+
+Permite estudiar diferentes características del documento:
+
+- Número de palabras.
+- Número de frases.
+- Número de párrafos.
+- Longitud media de las frases.
+- Número de palabras diferentes.
+- Diversidad léxica.
+- Análisis de claridad y precisión.
+- Análisis de cohesión y coherencia.
+- Identificación de repeticiones y problemas de vocabulario.
+- Evaluación de la estructura sintáctica.
+- Revisión de la argumentación y las citas.
+
+**B. Revisión académica**
+
+Permite mejorar un texto a partir de diferentes enfoques:
+
+- Claridad y precisión.
+- Cohesión y estructura.
+- Registro académico.
+- Revisión integral.
+
+También permite introducir instrucciones adicionales para personalizar la revisión.
+
+La herramienta genera:
+- Una versión revisada del texto.
+- Una explicación de los cambios realizados.
+- Aspectos que el autor debe comprobar.
+- Descarga del resultado en formato Markdown (.md).
+
+**Nota metodológica:** este módulo no determina si un texto ha sido escrito por una persona o por una IA. Los detectores de inteligencia artificial pueden producir falsos positivos y falsos negativos. El análisis lingüístico no constituye una prueba de autoría ni garantiza resultados ante detectores externos.
+
+## 🧠 Arquitectura del proyecto
+
+La aplicación utiliza una arquitectura modular que separa la interfaz, los módulos funcionales y los servicios centrales.
+
+```text
+EduMaster-AI/
+│
+├── app.py
+│
+├── config/
+│   ├── settings.py
+│   ├── prompts.py
+│   └── models.py
+│
+├── core/
+│   ├── ai_engine.py
+│   ├── document_reader.py
+│   ├── document_writer.py
+│   ├── source_validator.py
+│   └── text_processor.py
+│
+├── modules/
+│   ├── revision.py
+│   │
+│   └── humanizador/
+│       ├── __init__.py
+│       └── interfaz.py
+│
+├── requirements.txt
+└── README.md
+```
+
+### Motor central de inteligencia artificial
+
+El archivo `core/ai_engine.py` centraliza las conexiones con Google Gemini.
+
+Sus responsabilidades son:
+- Obtener la clave API.
+- Configurar el cliente de Gemini.
+- Gestionar las peticiones.
+- Controlar errores de conexión.
+- Devolver las respuestas del modelo.
+- Gestionar la generación de contenido.
+
+Los módulos funcionales utilizan este motor común para comunicarse con Gemini.
+
+## ⚙️ Instalación y configuración
+
+### Requisitos
+
+- Python 3.10 o superior.
+- Una clave API de Google Gemini.
+- Git (opcional, para clonar el repositorio).
+
+### 1. Clonar el repositorio
 
 ```bash
-# 1. Clona el repositorio
 git clone https://github.com/pumpkincrushed/EduMaster-AI.git
-cd EduMaster-AI
+```
 
-# 2. Crea un entorno virtual
+### 2. Entrar en la carpeta de la aplicación
+
+```bash
+cd EduMaster-AI/EduMaster-AI
+```
+
+### 3. Crear un entorno virtual
+
+```bash
 python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # macOS/Linux
+```
 
-# 3. Instala las dependencias
+Activación en Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### 4. Instalar dependencias
+
+```bash
 pip install -r requirements.txt
+```
 
-# 4. Configura la clave de API
-# Crea un archivo .env en la raíz con esta línea:
-# GEMINI_API_KEY=tu_clave_aqui
+### 5. Configurar Gemini
 
-# 5. Ejecuta la aplicación
+Crear un archivo `.env` en la carpeta de la aplicación:
+
+```env
+GEMINI_API_KEY=tu_clave_api
+```
+
+La clave puede obtenerse desde Google AI Studio:
+
+https://aistudio.google.com/apikey
+
+No subir nunca el archivo `.env` ni la clave API al repositorio público.
+
+### 6. Ejecutar la aplicación
+
+```bash
 streamlit run app.py
 ```
 
-## Despliegue en Streamlit Community Cloud
+La aplicación se abrirá normalmente en:
 
-1. Sube el repositorio a tu cuenta de GitHub.
-2. Entra en [share.streamlit.io](https://share.streamlit.io) con GitHub.
-3. Crea una nueva app con `app.py` como archivo principal.
-4. En **Settings → Secrets**, añade:
-
-```toml
-GEMINI_API_KEY = "tu_clave_aqui"
+```text
+http://localhost:8501
 ```
 
-La app se actualiza sola con cada commit en la rama principal.
+## ☁️ Despliegue en Streamlit Community Cloud
+
+La aplicación puede alojarse gratuitamente en Streamlit Community Cloud, sujeto a sus condiciones de uso y disponibilidad.
+
+Configuración del despliegue:
+
+| Parámetro | Valor |
+|---|---|
+| Repositorio | pumpkincrushed/EduMaster-AI |
+| Rama | EduMaster-AI-rev01 |
+| Archivo principal | EduMaster-AI/app.py |
+
+La clave `GEMINI_API_KEY` debe configurarse en los Secrets de Streamlit Cloud.
+
+https://share.streamlit.io/
+
+## 🔒 Privacidad y uso responsable
+
+- No introducir información personal o sensible innecesaria.
+- Revisar las respuestas generadas por Gemini.
+- Comprobar la veracidad de los datos y las referencias.
+- No utilizar las respuestas de IA como sustituto del criterio académico.
+- Mantener la responsabilidad sobre los documentos entregados.
+- Declarar el uso de inteligencia artificial cuando lo exijan las normas académicas correspondientes.
+
+## 🛠️ Desarrollo futuro
+
+El proyecto está preparado para incorporar nuevas herramientas.
+
+Entre las funcionalidades previstas se encuentran:
+
+- Generación de trabajos académicos.
+- Creación de materiales didácticos.
+- Análisis de similitud textual y prevención del plagio.
+- Comprobación de citas y referencias bibliográficas.
+- Comparación experimental de detectores de textos generados por IA.
+- Exportación de informes académicos a Word y PDF.
+- Ampliación de las herramientas de investigación educativa.
+
+Estas funcionalidades no deben considerarse implementadas hasta que se incorporen al código.
+
+## 📌 Estado del proyecto
+
+**Versión:** 0.2 – Laboratorio de escritura académica.
+
+**Estado:** En desarrollo.
+
+**Repositorio:** https://github.com/pumpkincrushed/EduMaster-AI
+
+**Aplicación web:** https://edumaster-ai-rsnewqkq96ak3j93veqnoh.streamlit.app/
 
 ---
 
-## Estructura del proyecto
-
-```
-EduMaster-AI/
-├── app.py                  # Punto de entrada Streamlit
-├── requirements.txt
-├── .gitignore
-│
-├── config/
-│   ├── settings.py         # Configuración global
-│   ├── models.py           # AIResponse (resultado del motor de IA)
-│   └── prompts.py          # Prompts base y mensajes de error
-│
-├── core/
-│   ├── ai_engine.py        # Motor central de Gemini
-│   ├── document_reader.py  # Lectura DOCX/PDF/TXT
-│   ├── document_writer.py  # Generación DOCX/PDF
-│   ├── text_processor.py   # Utilidades de texto
-│   └── source_validator.py # Validación de fuentes
-│
-├── modules/
-│   ├── revision.py         # ✅ Revisión de redacción
-│   └── (trabajos, materiales, investigacion, evaluacion,
-│        documentos, normativa, asistente, humanizador)/
-│                           # Carpetas reservadas, sin código todavía
-│
-├── database/               # Conexión SQLite e historial (sin conectar a la app)
-├── templates/              # Plantillas (vacías)
-└── tests/                  # Tests de IA, documentos y fuentes
-```
-
-Todos los módulos llaman a `core/ai_engine.py`; ninguno se conecta directamente con Gemini.
-
----
-
-## Tecnologías
-
-| Tecnología | Uso |
-|------------|-----|
-| Python 3.10+ | Lenguaje principal |
-| Streamlit | Interfaz web |
-| Google Gemini (`gemini-2.5-flash` por defecto) | IA generativa, mediante `google-genai` |
-| python-dotenv | Variables de entorno en local |
-
-Las dependencias de `core/document_reader.py` y `core/document_writer.py` (python-docx, ReportLab, PyMuPDF) no están en `requirements.txt` todavía; se añadirán al activar esos módulos.
-
----
-
-## Privacidad y buenas prácticas
-
-- **Claves:** la clave de Gemini va en los Secrets de Streamlit o en `.env`, que está en `.gitignore`. Nunca se sube al repositorio.
-- **Datos:** los textos se procesan en memoria. No se deben introducir datos identificativos de menores ni información sensible del alumnado.
-- **Revisión humana:** los resultados generados por IA deben revisarse antes de usarlos en contextos académicos reales.
-- **Autoría:** la herramienta ayuda a mejorar textos propios. No está pensada para eludir detectores de IA ni para entregar como propio un texto generado.
-
----
-
-
-Proyecto de desarrollo personal.
+*EduMaster AI es un proyecto académico y experimental orientado a la aplicación de la inteligencia artificial en el ámbito educativo.*
