@@ -24,7 +24,7 @@ APP_ICON = "🎓"
 # En Streamlit Cloud, las secrets se leen desde st.secrets
 # En local, se leen desde el archivo .env
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL_DEFAULT = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+GEMINI_MODEL_DEFAULT = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 # Modelos disponibles
 GEMINI_MODELS = {
