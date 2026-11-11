@@ -20,13 +20,10 @@ def _get_api_key() -> str:
     Obtiene la clave de la API de Gemini.
     Prioridad: st.secrets (Streamlit Cloud) → variable de entorno → cadena vacía.
     """
-    # 1. Streamlit Cloud secrets
     try:
         return st.secrets["GEMINI_API_KEY"]
-    except (KeyError, FileNotFoundError, Exception):
+    except Exception:
         pass
-
-    # 2. Variable de entorno (local con .env)
     return os.getenv("GEMINI_API_KEY", "")
 
 
@@ -36,10 +33,14 @@ def is_configured() -> bool:
 
 
 def _get_client():
-    """Crea y devuelve un cliente de Gemini configurado."""
+    """Crea el cliente de Gemini forzando la versión v1beta de la API."""
     from google import genai
-    api_key = _get_api_key()
-    return genai.Client(api_key=api_key)
+    from google.genai import types
+
+    return genai.Client(
+        api_key=_get_api_key(),
+        http_options=types.HttpOptions(api_version="v1beta"),
+    )
 
 
 def generate(
@@ -49,22 +50,8 @@ def generate(
     temperature: float = DEFAULT_TEMPERATURE,
     max_output_tokens: int = MAX_OUTPUT_TOKENS,
 ) -> AIResponse:
-    """
-    Genera una respuesta de Gemini.
-
-    Args:
-        prompt: El prompt del usuario.
-        system_instruction: Instrucción de sistema específica del módulo.
-                            Si es None, se usa SYSTEM_BASE.
-        model: Modelo de Gemini. Si es None, se usa el modelo por defecto.
-        temperature: Creatividad (0.0 determinista — 1.0 máxima creatividad).
-        max_output_tokens: Tokens máximos de la respuesta.
-
-    Returns:
-        AIResponse con el contenido generado o información de error.
-    """
-    api_key = _get_api_key()
-    if not api_key:
+    """Genera una respuesta de Gemini y devuelve un AIResponse."""
+    if not _get_api_key():
         return AIResponse(
             content=PROMPT_NO_API_KEY,
             model="none",
@@ -76,11 +63,9 @@ def generate(
     system = system_instruction or SYSTEM_BASE
 
     try:
-        from google import genai
         from google.genai import types
 
-        client = genai.Client(api_key=api_key)
-
+        client = _get_client()
         response = client.models.generate_content(
             model=model_name,
             contents=prompt,
@@ -93,7 +78,6 @@ def generate(
 
         content = response.text if response.text else ""
 
-        # Métricas de uso
         try:
             prompt_tokens = response.usage_metadata.prompt_token_count or 0
             output_tokens = response.usage_metadata.candidates_token_count or 0
@@ -110,12 +94,11 @@ def generate(
         )
 
     except Exception as e:
-        error_msg = str(e)
         return AIResponse(
             content=PROMPT_API_ERROR,
             model=model_name,
             success=False,
-            error=error_msg,
+            error=str(e),
         )
 
 
@@ -125,16 +108,8 @@ def generate_streaming(
     model: Optional[str] = None,
     temperature: float = DEFAULT_TEMPERATURE,
 ) -> Generator[str, None, None]:
-    """
-    Generador que produce chunks de texto en streaming.
-    Útil para respuestas largas que se muestran progresivamente en Streamlit.
-
-    Usage:
-        for chunk in generate_streaming(prompt):
-            st.write(chunk)
-    """
-    api_key = _get_api_key()
-    if not api_key:
+    """Genera la respuesta en streaming, por trozos de texto."""
+    if not _get_api_key():
         yield PROMPT_NO_API_KEY
         return
 
@@ -142,11 +117,9 @@ def generate_streaming(
     system = system_instruction or SYSTEM_BASE
 
     try:
-        from google import genai
         from google.genai import types
 
-        client = genai.Client(api_key=api_key)
-
+        client = _get_client()
         for chunk in client.models.generate_content_stream(
             model=model_name,
             contents=prompt,
@@ -160,4 +133,4 @@ def generate_streaming(
                 yield chunk.text
 
     except Exception as e:
-        yield f"\n\n Error al conectar con Gemini: {e}"
+        yield f"\n\nError al conectar con Gemini: {e}"
